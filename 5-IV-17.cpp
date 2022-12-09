@@ -10,13 +10,14 @@ using namespace std;
 typedef long long li;
 
 
-double binpow(double x, li n){
+double binpow(double x, li n) {
     double res = 1;
-    while (n){
-        if (n & 1){
+    while (n) {
+        if (n & 1) {
             res *= x;
             --n;
-        }else{
+        }
+        else {
             x *= x;
             n >>= 1;
         }
@@ -25,19 +26,17 @@ double binpow(double x, li n){
 }
 
 
-vector<li> F(double x){
+vector<double> F(double x) {
     double curr = eps + 1, s = 0;
     int n = 1;
-    vector <li> res;
-    while (abs(curr) > eps){
-        curr = binpow((x - 1), n)/ binpow((x + 1), n);
-        //cout << curr << endl;
-        //curr = pow((x - 1), n) / pow((x + 1), n);
+    vector <double> res;
+    while (abs(curr) > eps) {
+        curr = binpow((x - 1), n) / (n * binpow((x + 1), n));
         s += curr;
-        n+=2;
+        n += 2;
     }
-    res.push_back(2 * (int)s);
-    res.push_back(n);
+    res.push_back(2 * s);
+    res.push_back((int)(n / 2));
     return res;
 }
 
@@ -48,11 +47,11 @@ int main() {
     cout << "# |   x  | F(x) | n \n";
     //F(x) = 2[(x-1) / (x + 1) + (x - 1)^3 / 3(x + 1)^3 + (x - 1)^5/5(x + 1)^5 + ...]
     int n = 1;
-    vector <li> temp;
-    while (a <= b + eps){
+    vector <double> temp;
+    while (a <= b + eps) {
         temp = F(a);
-        cout << n << " | " << a << " |  " << temp[0] << "   | " << temp[1] << endl;
-        a+=h;
+        cout << n << " | " << a << " |  " << temp[0] << "   | " << (int)temp[1] << endl;
+        a += h;
         n++;
     }
 
