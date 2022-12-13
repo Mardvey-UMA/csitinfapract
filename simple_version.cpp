@@ -4,6 +4,8 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <map>
+#include <vector>
 
 using namespace std;
 //Глобальные переменные//
@@ -12,23 +14,22 @@ string white_pix = "\033[37;47m  \033[m";
 string red_pix = "\033[31;41m  \033[m";
 string blue_pix = "\033[34;44m  \033[m";
 
-string num_pix = "\033[32;42m  \033[m";
+string num_pix = "\033[33;43m  \033[m";
 string letter_pix = "\033[33;43m  \033[m";
-string empty_pix = "\033[36;46m  \033[m";
+string empty_pix = "\033[33;43m  \033[m";
 
 string alphavile = "*ABCDEFGH*";
 string numbers = "*87654321*";
 //////////////////////////////////////
 
-void Sleep(int x){
-    std::this_thread::sleep_for(std::chrono::milliseconds(x));
+void sleep_l(unsigned int milliseconds_){
+    this_thread::sleep_for(chrono::milliseconds(milliseconds_));
 }
-
+//A передвинуть курсор вверх на # строк
+//B передвинуть курсор вниз на # строк
+//С передвинуть курсор вправо на # столбцов
+//D передвинуть курсор влево на # столбцов
 void setcp(char naprav, int pix){
-    //    \033[#A передвинуть курсор вверх на # строк
-    //    \033[#B передвинуть курсор вниз на # строк
-    //    \033[#С передвинуть курсор вправо на # столбцов
-    //    \033[#D передвинуть курсор влево на # столбцов
     string c = "\033[" + to_string(pix) + naprav;
     cout << c;
 }
@@ -97,8 +98,9 @@ void paint_empty_block(){
     setcp('A',2);
 }
 
-void out_put_pole(char **pole){
+void out_put_pole(char **pole, map <string, int> &score){
     system("clear");
+    // score - словарь счета игроков
     for (int i = 0; i < 10; i++){
         for (int j = 0; j < 10; j++){
             if ((j == 0 || j == 9) && (i != 0 && i != 9)){
@@ -117,49 +119,161 @@ void out_put_pole(char **pole){
         setcp('D',60);
     }
     setcp('A',48);
-    //cout << "##########";
+    ////////////////
+    setcp('C',70);  
+    setcp('B',5);
+    cout << "СЧЕТ: \033[1;31mКРАСНЫЕ\033 \033[1;34m СИНИЕ\033[0m";
+    setcp('B',1);
+    setcp('D',19);
+    cout << "         \033[1;41m"<< score["red"] << "\033[0m";
+    cout << "      \033[1;44m" << score["blue"] << "\033[0m\n";
+    setcp('A',8);
+    //cout << "#";
+    ////////////////
 }
 
-void set_figure(char **pole, string start_pos, string fin_pos){
-    
+void make_hod(char **pole, char **pole2, int step){
+    // step == 1 - Голубые
+    // step == 0 - Красные
+    vector <char> pos;
+    map <char, int> coords;
+    coords['A'] = 1;
+    coords['B'] = 2;
+    coords['C'] = 3;
+    coords['D'] = 4;
+    coords['E'] = 5;
+    coords['F'] = 6;
+    coords['G'] = 7;
+    coords['H'] = 8;
+    coords['a'] = 1;
+    coords['b'] = 2;
+    coords['c'] = 3;
+    coords['d'] = 4;
+    coords['e'] = 5;
+    coords['f'] = 6;
+    coords['g'] = 7;
+    coords['h'] = 8;
+    coords['1'] = 1;
+    coords['2'] = 2;
+    coords['3'] = 3;
+    coords['4'] = 4;
+    coords['5'] = 5;
+    coords['6'] = 6;
+    coords['7'] = 7;
+    coords['8'] = 8;
+    string s;
+    getline(cin, s);
+    for (auto x: s){
+        if (x != ' '){
+            pos.push_back(x);
+        }
+    }
+    if (step == 1 && pole[coords[pos[0]]][coords[pos[1]]] == 'B' && pole[coords[pos[0]]][coords[pos[1]]] == 'N'){
+        pole[coords[pos[0]]][coords[pos[1]]] == 'N';
+        pole[coords[pos[0]]][coords[pos[1]]] == 'B';
+        pole2[coords[pos[0]]][coords[pos[1]]] == 'N';
+        pole2[coords[pos[0]]][coords[pos[1]]] == 'B';
+    }else if (step == 0 && pole[coords[pos[0]]][coords[pos[1]]] == 'R' && pole[coords[pos[0]]][coords[pos[1]]] == 'N'){
+        pole[coords[pos[0]]][coords[pos[1]]] == 'N';
+        pole[coords[pos[0]]][coords[pos[1]]] == 'R';  
+        pole2[coords[pos[0]]][coords[pos[1]]] == 'N';
+        pole2[coords[pos[0]]][coords[pos[1]]] == 'B';      
+    }else{
+        cout << "Извините вы не можете сделать этот ход";
+    }
 }
 
 int main(){
 system("clear");
-char **pole = new char*[10];
+//Поле со стороны синих
+char **pole_b = new char*[10];
 for (int k = 0; k < 10; k++)
-    pole[k] = new char [10];
-/// Инициализация игрового поля ///
+    pole_b[k] = new char [10];
+//Поле со стороны красных
+char **pole_r = new char*[10];
+for (int k = 0; k < 10; k++)
+    pole_r[k] = new char [10];
+//////////////////////////////
+
+/// Инициализация игрового поля (синие)///
     for (int j = 0; j <= 9; j++){
-        pole[0][j] = alphavile[j];
-        pole[9][j] = alphavile[j];
+        pole_b[0][j] = alphavile[j];
+        pole_b[9][j] = alphavile[j];
     }
 
     for (int i = 0; i <= 9; i++){
-        pole[i][0] = numbers[i];
-        pole[i][9] = numbers[i];
+        pole_b[i][0] = numbers[i];
+        pole_b[i][9] = numbers[i];
     }
  
     for (int i = 1; i <= 8; i++){
         for (int j = 1; j <= 8; j++){
             if (i >= 1 && i <= 3 && (i + j) % 2 != 0)
-                pole[i][j] = 'R';
+                pole_b[i][j] = 'R';
             else if (i >= 6 && i <= 8 && (i + j) % 2 != 0)
-                pole[i][j] = 'B';
+                pole_b[i][j] = 'B';
             else
-                pole[i][j] = 'N';
+                pole_b[i][j] = 'N';
         }
     }
 ///////////////////////////////////////
-//setcp('B',5);
-//setcp('C',10);
-//paint_number_block('1');
-//paint_letter_block('A');
-out_put_pole(pole);
-Sleep(3000);
-//set_figure(pole, 'N', 5, 4);
-Sleep(500);
-//set_figure(pole, 'R', 5, 4);
-out_put_pole(pole);
+/// Инициализация игрового поля (синие)///
+    for (int j = 0; j <= 9; j++){
+        pole_r[0][j] = alphavile[9 - j];
+        pole_r[9][j] = alphavile[9 - j];
+    }
+
+    for (int i = 0; i <= 9; i++){
+        pole_r[i][0] = numbers[9 - i];
+        pole_r[i][9] = numbers[9 - i];
+    }
+ 
+    for (int i = 1; i <= 8; i++){
+        for (int j = 1; j <= 8; j++){
+            if (i >= 1 && i <= 3 && (i + j) % 2 != 0)
+                pole_r[i][j] = 'B';
+            else if (i >= 6 && i <= 8 && (i + j) % 2 != 0)
+                pole_r[i][j] = 'R';
+            else
+                pole_r[i][j] = 'N';
+        }
+    }
+///////////////////////////////////////
+int flag = 1;
+cout << "Добро пожаловать в шашки\nПервыми ходят - синие, чтобы сделать ход напишите координаты в виде *буква* *цифра* - начало, далее *буква* *цифра* - конец\n";
+cout << "Введите 1 для начала игры\n";
+//cin >> flag;
+map <string, int> score;
+score["blue"] = 0;
+score["red"] = 0;
+int step = 1;
+if (flag == 1){
+    out_put_pole(pole_b, score);
+    while (true){
+        cout << "Введите координаты хода";
+        if (step == 1){
+            cout << " синие ходят";
+            make_hod(pole_b, pole_r, step);
+        }else{
+            cout << " красные ходят";
+            make_hod(pole_r, pole_b, step);
+        }
+        cout << "\n";
+        
+        // if (step == 1){
+        //     out_put_pole(pole_b, score);
+        //     make_hod(pole_b, pole_r, 1);
+        //     sleep_l(5000);
+        //     step = 0;
+        // }else{
+        //     out_put_pole(pole_r, score);
+        //     make_hod(pole_r, pole_b, 0);
+        //     sleep_l(5000);
+        //     step = 1;
+        // }
+    }
+    
+}
+
 cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
