@@ -2,13 +2,13 @@
 #include <string>
 #include <map>
 #include <stdlib.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <string>
 #include <chrono>
 #include <thread>
 #include <time.h>
 #include <algorithm>
-
+#include <vector>
 #define br break;
 using namespace std;
 typedef string ss;
@@ -22,8 +22,8 @@ map <string, int> endings;
 map <string, bool> used_loc;
 ss uni_ans = "\033[32mПожалуй давайте вернемся\033[0m";
 map <ss, ss> places;
-vector <ss> choises = {"1 - Выйти на улицу", "2 - Зайти на кухню", "3 - Осмотреть зал", "4 - Осмотреть ванную" ,"5 - Сдаться"};
-vector <ss> pl2 = {"outdoor", "kitchen", "living_room", "bathroom"};
+vector <ss> choises = { "1 - Выйти на улицу", "2 - Зайти на кухню", "3 - Осмотреть зал", "4 - Осмотреть ванную" ,"5 - Сдаться" };
+vector <ss> pl2 = { "outdoor", "kitchen", "living_room", "bathroom" };
 // Инициализация функций, которые будут использоваться //
 void begin_game();
 
@@ -86,7 +86,7 @@ void cleaning_choise() {
     cin >> choise;
     switch (choise) {
     case 1:
-        change_color("34","1");
+        change_color("34", "1");
         text_out(moi_text);
         sleep_l(gl_sl);
         clean_flag = true;
@@ -94,7 +94,7 @@ void cleaning_choise() {
         reset_color();
         br;
     case 2:
-        change_color("31","4");
+        change_color("31", "4");
         text_out(wrong_text);
         sleep_l(gl_sl);
         reset_color();
@@ -109,69 +109,71 @@ void cleaning_choise() {
 void begin_choise() {
     bool flag = true;
     for (auto loc : used_loc)
-        flag*=loc.second;
-    if (flag){
+        flag *= loc.second;
+    if (flag) {
         ss end_text = "Кажется мы сходили во все комнаты, и изучили каждую улику\n Теперь я могу сказать вам, кто же является вором сосисок\n";
-        change_color("33","4");
+        change_color("33", "4");
         text_out(end_text);
         reset_color();
-        change_color("32","1");
+        change_color("32", "1");
         cout << "1 - Назвать имя вора\n";
         reset_color();
-        change_color("31","1");
+        change_color("31", "1");
         cout << "2 - Убежать\n";
         reset_color();
         cin >> choise;
-        switch(choise){
-            case 1:
+        switch (choise) {
+        case 1:
             end_game();
             br;
-            case 2:
+        case 2:
             end_game_concid();
             br;
         }
-    }else{
-    if (first_l){
-        clear_console();
-        change_color("32","");
-        text_out("Кажется мы зашли еще не во все комнаты, давайте продолжим\n");
-        reset_color();
     }
-    places["outdoor"] = choises[0];
-    places["kitchen"] = choises[1];
-    places["living_room"] = choises[2];
-    places["bathroom"] = choises[3];
-    for (auto place : pl2){
-        if (used_loc[place] == true){
-            change_color("32","1");
-        }else{
-            change_color("33"," ");
+    else {
+        if (first_l) {
+            clear_console();
+            change_color("32", "");
+            text_out("Кажется мы зашли еще не во все комнаты, давайте продолжим\n");
+            reset_color();
         }
-        cout << places[place] << endl;
+        places["outdoor"] = choises[0];
+        places["kitchen"] = choises[1];
+        places["living_room"] = choises[2];
+        places["bathroom"] = choises[3];
+        for (auto place : pl2) {
+            if (used_loc[place] == true) {
+                change_color("32", "1");
+            }
+            else {
+                change_color("33", " ");
+            }
+            cout << places[place] << endl;
+            reset_color();
+        }
+        change_color("31", "4");
+        cout << choises[4] << endl;
         reset_color();
-    } 
-    change_color("31","4");
-    cout << choises[4] << endl;
-    reset_color();
-    //cout << "1 - Выйти на улицу\n2 - Зайти на кухню\n3 - Осмотреть зал\n4 - Осмотреть ванную\n5 - Сдаться\n";
-    cin >> choise;
-    switch (choise) {
-    case 1:
-        outdoor_choise();
-        br;
-    case 2:
-        kitchen_choise();
-        br;
-    case 3:
-        living_room_choise();
-        br;
-    case 4:
-        bathroom_choise();
-        br;
-    case 5:
-        end_game_concid();
-        br;
-    }
+        //cout << "1 - Выйти на улицу\n2 - Зайти на кухню\n3 - Осмотреть зал\n4 - Осмотреть ванную\n5 - Сдаться\n";
+        cin >> choise;
+        switch (choise) {
+        case 1:
+            outdoor_choise();
+            br;
+        case 2:
+            kitchen_choise();
+            br;
+        case 3:
+            living_room_choise();
+            br;
+        case 4:
+            bathroom_choise();
+            br;
+        case 5:
+            end_game_concid();
+            br;
+        }
     }
 }
 
@@ -180,9 +182,9 @@ void bathroom_choise() {
     ss rtext = "*заходят в ванную*\nТут только грязный кошачий лоток, стаканчик с бритвами и зубной щеткой.\nНедовольная кошка пьющая воду.Пожалуй больше не будем сюда заходить.Здесь нет ничего интересного.";
     if (used_loc["bathroom"])
         default_choise();
-    else{
+    else {
         used_loc["bathroom"] = true;
-        change_color("36","1");
+        change_color("36", "1");
         text_out(rtext);
         reset_color();
     }
@@ -202,7 +204,7 @@ void outdoor_choise() {
         ss ans1 = "-Да, это она, и что нам это дает, ведь я собирал мусор ночью и мало что помню…";
         ss ans1_dec = "-Возможно вам кто-то помогал, и этот кто-то не хотел, чтобы вы вспомнили о сосисках.";
         ss ans2 = "-Какой-то вы молчун…";
-        change_color("34"," ");
+        change_color("34", " ");
         text_out(description_text);
         reset_color();
         cout << "1 - Спросить является ли эти пленки пленками от тех сосисок\n2 - Многозначительно промолчать\n3 - Вернуться назад\n";
@@ -240,32 +242,32 @@ void kitchen_choise() {
         ss description_text = "*заходят на кухню*\nКоробки от пиццы, грязная посуда, куча пепельниц сделанных из всего, что было под рукой.\nУжасная вонь.Видите единственную тарелку на столе, на ней тонкая пленка бульона.";
         ss ans1 = "– Что-то мне не нравится ваше поведение, зачем вы нюхаете тарелку?";
         ss ans2 = "ЧТО ВЫ ТВОРИТЕ????? ВЫ В СВОЕМ УМЕ, А ЕСЛИ Я ПОРЕЖУСЬ??? \nИ вообще эта тарелка стоит денег…";
-        change_color("33","1");
+        change_color("33", "1");
         text_out(description_text);
         reset_color();
         cout << "1 - Понюхать тарелку\n2 - Взять тарелку и бросить об стену\n3 - Помыть тарелку\n4 - Вернуться\n";
         cin >> choise;
         switch (choise) {
-            case 1:
-                text_out(ans1);
-                smelling_choise();
-                endings["other_end"]++;
-                br;
-            case 2:
-                text_out(ans2);
-                break_tarelka();
-                endings["true_end"]++;
-                br;
-            case 3:
-                clear_console();
-                begin_choise();
-                endings["other_end"]++;
-                br;
-            case 4:
-                clear_console();
-                text_out(uni_ans);
-                sleep_l(500);
-                used_loc["kitchen"] = false;
+        case 1:
+            text_out(ans1);
+            smelling_choise();
+            endings["other_end"]++;
+            br;
+        case 2:
+            text_out(ans2);
+            break_tarelka();
+            endings["true_end"]++;
+            br;
+        case 3:
+            clear_console();
+            begin_choise();
+            endings["other_end"]++;
+            br;
+        case 4:
+            clear_console();
+            text_out(uni_ans);
+            sleep_l(500);
+            used_loc["kitchen"] = false;
         }
     }
 }
@@ -274,14 +276,14 @@ void living_room_choise() {
     first_l = true;
     if (used_loc["living_room"])
         default_choise();
-    else{
+    else {
         used_loc["living_room"] = true;
         ss description_text = "*заходят в зал*\nПо дивану прыгает маленькая собачка Фифа.Она радостно бежит к вам и обнюхивает вас.";
         ss hello_text = "-Для начала давайте осмотрим зал.";
         ss var_txt = "Хмм моя собака очень рада вас видеть и виляет хвостом, как будто она вас когда-то видела";
         ss next_text = "На грязном столе, покрытым странными сладкими пятнами красуется алюминиевая кастрюлька.";
         text_out(hello_text);
-        change_color("32","1");
+        change_color("32", "1");
         text_out(description_text);
         reset_color();
         if (!clean_flag) {
@@ -330,13 +332,13 @@ void smelling_choise() {
     ss ans3 = "А… ну да";
     cin >> choise;
     switch (choise) {
-        case 1:
-            text_out(ans1);
-            br;
-        case 2:
-            text_out(ans2);
-            endings["true_end"]++;
-            br;
+    case 1:
+        text_out(ans1);
+        br;
+    case 2:
+        text_out(ans2);
+        endings["true_end"]++;
+        br;
     }
     text_out(ans3);
     sleep_l(gl_sl);
@@ -405,7 +407,7 @@ void otpechat_choise() {
 /////////////////////////////////////////////////
 void default_choise() {
     clear_console();
-    change_color("31","1");
+    change_color("31", "1");
     ss wrong_text = "Ой, похоже мы здесь уже были, память уже совсем отшибло из-за фенибута";
     text_out(wrong_text);
     reset_color();
@@ -414,56 +416,60 @@ void default_choise() {
     begin_choise();
 }
 
-void end_game(){
+void end_game() {
     int mx = -1;
     ss endya;
-    for (auto endi : endings){
-        if (endi.second > mx){
+    for (auto endi : endings) {
+        if (endi.second > mx) {
             mx = endi.second;
             endya = endi.first;
         }
     }
-    
-    if (mx == 100){
+
+    if (mx == 100) {
         roma();
-    }else if (mx == 101){
+    }
+    else if (mx == 101) {
         dima();
-    }else{
-        if (endya == "dog_end"){
+    }
+    else {
+        if (endya == "dog_end") {
             doga();
-        }else if (endya == "true_end"){
+        }
+        else if (endya == "true_end") {
             roma();
-        }else if (endya == "other_end"){
+        }
+        else if (endya == "other_end") {
             dima();
         }
     }
     exit(0);
 }
 /////КОНЦОВКИ///
-void roma(){
+void roma() {
     ss roma_text = "Я должен признаться...\nНо все это время я был Романом Шевцовым и на самом деле это я съел сосисоны\nК сожалению я больше не мог этого скрывать, но думаю вы уже сами догадались";
     ss ans_roma = "-Да, я уже давно догадался, моя собака тебя узнала, потому что ты даже не удосужился помыться и ты очень странно себя вел";
-    change_color("31","1");
+    change_color("31", "1");
     text_out(roma_text);
     reset_color();
     sleep_l(300);
     text_out(ans_roma);
     exit(0);
 }
-void dima(){
+void dima() {
     ss dima_text = "Очень жаль, но все улики ведут к тому, что это Дмитрий Рыблов\nЭтот коварный гений съел сосиски";
-    ss ans_dima  = "-Святые угодники, я так и знал, но до конца не мог поверить, спасибо детектив";
-    change_color("35","1");
+    ss ans_dima = "-Святые угодники, я так и знал, но до конца не мог поверить, спасибо детектив";
+    change_color("35", "1");
     text_out(dima_text);
     reset_color();
     sleep_l(300);
     text_out(ans_dima);
     exit(0);
 }
-void doga(){
+void doga() {
     ss doga_text = "Неприятно это говорить, но кажется эта милая собачка Фифа съела сосиски...\nНе спрашивайте как она их сварила, это загадка";
     ss doga_ans = "эээмэмэмэ ладно детектив, я вам верю, в следующий раз буду лучше за ней следить";
-    change_color("34","1");
+    change_color("34", "1");
     text_out(doga_text);
     reset_color();
     sleep_l(300);
@@ -471,21 +477,21 @@ void doga(){
     exit(0);
 }
 //////////
-void end_game_concid(){
+void end_game_concid() {
     ss concid_text = "-Очень жаль, что вы испугались этого дела, видимо я в вас ошибся";
     ss anser_text = "-Да, пук мук извините...";
-    change_color("31","1");
+    change_color("31", "1");
     text_out(concid_text);
     reset_color();
     sleep_l(300);
-    change_color("34","");
+    change_color("34", "");
     text_out(anser_text);
     reset_color();
     exit(0);
 }
 
 void clear_console() {
-    system("clear");
+    system("cls");
 }
 
 void waiting() {
@@ -497,7 +503,7 @@ void waiting() {
     clear_console();
 }
 ///////////////////////////////////////////////
-void sleep_l(unsigned int milliseconds_){
+void sleep_l(unsigned int milliseconds_) {
     this_thread::sleep_for(chrono::milliseconds(milliseconds_));
 }
 //black        30         
@@ -508,13 +514,13 @@ void sleep_l(unsigned int milliseconds_){
 //magenta      35        
 //cyan         36        
 //white        37        
-void change_color(ss color, ss j){
+void change_color(ss color, ss j) {
     if (j == "1" || j == "4")
         cout << "\033[" + j + ";" + color + "m";
     else
         cout << "\033[" + color + "m";
 }
-void reset_color(){
+void reset_color() {
     cout << "\033[0m";
 }
 /// Функция для красивого вывода текста ///
@@ -529,7 +535,7 @@ void text_out(ss text) {
 //////////////////////////////////////////
 int main()
 {
-    system("clear");
+    system("cls");
     //INIT//
     endings["true_end"] = 0;
     endings["other_end"] = 0;
