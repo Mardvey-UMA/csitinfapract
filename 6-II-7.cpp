@@ -1,15 +1,13 @@
-//https://urait.ru/viewer/programmirovanie-na-yazyke-s-prakticheskiy-kurs-438987#page/140
 #include <iostream>
-
 using namespace std;
 
 int main(){
     setlocale(LC_ALL, "Russian");
-    cout << "‚¢¥¤¨â¥ à §¬¥à­®áâì ¬ áá¨¢ \n";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ€Ð°Ð·Ð¼ÐµÑ€Ð½Ð¾ÑÑ‚ÑŒ Ð¼Ð°ÑÑÐ¸Ð²Ð°\n";
     int n, pos = 0;
     cin >> n;
     int arr[n];
-    cout << "‚¢¥¤¨â¥ í«¥¬¥­âë ¬ áá¨¢ \n";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð¼Ð°ÑÑÐ¸Ð²Ð°\n";
     for (int i = 0; i < n; i++){
         cin >> arr[i];
     }

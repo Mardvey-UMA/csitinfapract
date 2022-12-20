@@ -1,29 +1,17 @@
 #include <iostream>
 #include <cmath>
-//https://urait.ru/viewer/programmirovanie-na-yazyke-s-prakticheskiy-kurs-438987#page/74
 using namespace std;
 int main() {
     setlocale(LC_ALL, "Russian");
-    // y = |x|
-    // y^2 + x^2 = 15
-    // ªãá®ç¥ª ¯¨ææë á¢¥àåã
     double x, y;
-    cout << "Vvedite coordinaty tochek x y:\n";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð¾Ñ€Ð´Ð¸Ð½Ð°Ñ‚Ñ‹ Ñ‚Ð¾Ñ‡ÐµÐº x y:\n";
     cin >> x >> y;
     double r = sqrt(x*x + y*y), eps = pow(10, -9);
     if (r < 15 && y > 0 && y > x && y > -x){
-        cout << "Yes";
+        cout << "Ð”Ð°";
     }else if ((y >= 0 && y >= x && y >= -x && (r >= (15-eps) && r <= (15+eps))) || (y == abs(x) && r <= (15 + eps) )){
-        cout << "On board";
+        cout << "ÐÐ° Ð³Ñ€Ð°Ð½Ð¸Ñ†Ðµ";
     }else{
-        cout << "No";
+        cout << "ÐÐµÑ‚";
     }
-    // ’¥áâë:
-    // 0 3.872983346207417 - ƒà ­¨æ 
-    // 1 1 - ƒà ­¨æ 
-    // 0 3 - „ 
-    // 0 -3.872983346207417 - ¥â
-    // 0 0 - ƒà ­¨æ 
-    // 0 -0.000001 - ¥â
-    // 0 0.000001 - „ 
 }

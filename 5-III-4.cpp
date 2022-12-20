@@ -1,5 +1,3 @@
-//https://urait.ru/viewer/programmirovanie-na-yazyke-s-prakticheskiy-kurs-438987#page/96
-
 #include <iostream>
 #include <cmath>
 
@@ -12,7 +10,7 @@ double f(li i){
 int main() {
     setlocale(LC_ALL, "Russian");
     double e, s = 0, curr = e + 1;
-    cout << "Введите e\n";
+    cout << "╨Т╨▓╨╡╨┤╨╕╤В╨╡ e\n";
     cin >> e;
     int i = 1;
     while (fabs(curr) > e){
@@ -21,10 +19,4 @@ int main() {
         i++;
     }
     cout << s;
-    //Тесты:
-    //Ввод 0.00001 Вывод 0.996845
-    //Ввод 1 Вывод 0
-    //Ввод 0.02 Вывод 0.875
-    //Ввод 0.00000001 Вывод 0.9999
-    //Ввод 0.999999 Вывод 0.5
 }
