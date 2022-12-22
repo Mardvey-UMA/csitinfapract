@@ -23,7 +23,7 @@ int main(){
     int x, y, cnt = 0;
     point *points[100];
     point *ans[3];
-    ifstream in ("input.txt");
+    ifstream in ("input1.txt");
     while (in.peek() != EOF){
         getline(in, sx,' ');
         getline(in, sy);
@@ -33,6 +33,7 @@ int main(){
         cnt++;
     }
     double max_per = -1;
+    double curr_p = -2;
     for (int i = 0; i < cnt; i++)
         for (int j = 0; j < cnt; j++)
             for (int t = 0; t < cnt; t++){
@@ -43,7 +44,12 @@ int main(){
                     int y2 = points[j] -> y;
                     int x3 = points[t] -> x;
                     int y3 = points[t] -> y;
-                    double curr_p = get_rast(x1,y1,x2,y2) + get_rast(x2,y2,x3,y3) + get_rast(x3,y3,x1,y1);
+                    double A = get_rast(x1,y1,x2,y2);
+                    double B = get_rast(x2,y2,x3,y3);
+                    double C = get_rast(x3,y3,x1,y1);
+                    if ( (A + B) > C && (A + C) > B && (B + C) > A){
+                        curr_p = A + B + C;
+                    }
                     if (curr_p > max_per){
                         max_per = curr_p;
                         ans[0] = points[i];
@@ -52,6 +58,10 @@ int main(){
                     }
                 }
             }
+    if (max_per == -1){
+        cout << "Треугольники не найдены\n";
+        exit(0);
+    }
     cout << "Максимальный периметр: " << max_per << endl;
     for (int i = 0; i < 3; i++){
         cout << "Точка " << i + 1 << endl;
@@ -74,4 +84,17 @@ int main(){
 // ( 7 , 8 )
 // Точка 3
 // ( -100 , 100 )
+//input.txt
+//1 1
+//1 1
+//1 1
+//1 1
+//1 1
+//1 1
+//1 1
+//1 1
+//1 1
+//1 1
+//output
+//Треугольники не найдены
 }

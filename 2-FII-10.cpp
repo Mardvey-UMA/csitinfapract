@@ -1,16 +1,24 @@
 #include <iostream>
+//16 6 12 9
 using namespace std;
 void f(int &x){
-      if (x % 2 == 0)
-          x/=2;
-      else
-          x = 0;
-  }
-  int main() {
-      setlocale(LC_ALL, "Russian");
-      cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾:\n";
-      int x;
-      cin >> x;
-      f(x);
-      cout << "Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹: " << x;
-  }
+    if (x % 2 == 0){
+        x/=2;
+    }else{
+        x = 0;
+    }
+}
+int main() {
+    setlocale(LC_ALL, "Russian");
+    cout << "‚¢¥¤¨â¥ ç¨á«®:\n";
+    int x;
+    cin >> x;
+    f(x);
+    cout << "¥§ã«ìâ â à ¡®âë: " << x;
+    // ’¥áâ
+    // 10 - 5
+    // 3 - 0
+    // -10 - (-5)
+    // -3 - 0
+    // 0 - 0
+}

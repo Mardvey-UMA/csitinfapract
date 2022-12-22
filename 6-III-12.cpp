@@ -8,9 +8,9 @@ int main(){
     int n;
     cout << "Введите n\n";
     cin >> n;
+    matrix = new int *[n];
     for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            matrix[i] = new int[n];
+        matrix[i] = new int[n];
     cout << "Введите массив по строчкам\n";
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)

@@ -27,7 +27,7 @@ product::product(string type1, double cost1, string kind1, int count1){
     count = count1;
 }
 void product::increase_cost(int x){
-    cost+= (x/100)*cost;
+    cost+= (x/100.)*cost;
 }
 void product::out_data(){
     out << type << " " << cost << " " << kind << " " << count << endl;
@@ -40,13 +40,13 @@ int main(){
     out << title << endl;
     string type, kind, count1, cost1;
     double cost;
-    int x = 110, count;
+    int x = 50, count;
     while (in.peek() != EOF){
         getline(in, type, ' ');
         getline(in, cost1, ' ');
         getline(in, kind, ' ');
         getline(in, count1);
-        cost = stoi(cost1);
+        cost = stod(cost1);
         count = stoi(count1);
         product *prod = new product(type, cost, kind, count);
         prod->increase_cost(x); // инфляция, хаха

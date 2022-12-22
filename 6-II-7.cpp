@@ -1,13 +1,15 @@
+//https://urait.ru/viewer/programmirovanie-na-yazyke-s-prakticheskiy-kurs-438987#page/140
 #include <iostream>
+
 using namespace std;
 
 int main(){
     setlocale(LC_ALL, "Russian");
-    cout << "Введите размерность массива\n";
+    cout << "������ ࠧ��୮��� ���ᨢ�\n";
     int n, pos = 0;
     cin >> n;
     int arr[n];
-    cout << "Введите элементы массива\n";
+    cout << "������ �������� ���ᨢ�\n";
     for (int i = 0; i < n; i++){
         cin >> arr[i];
     }
@@ -18,5 +20,5 @@ int main(){
             min = arr[i];
         }
     }
-    cout << pos;
+    cout << pos << endl;
 }
