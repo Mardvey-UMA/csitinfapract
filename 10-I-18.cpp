@@ -6,15 +6,16 @@ using namespace std;
 
 struct point
 {
-    int x, y;
-    point(int a, int b);
+    double x, y;
+    point(double a, double b);
 };
-point::point(int a, int b){
+point::point(double a, double b){
     x = a;
     y = b;
 }
 
-double get_rast(int x1, int y1, int x2, int y2){
+double get_rast(point a, point b){
+    int x1 = b.x, y1 = b.y, x2 = a.x, y2 = a.y;
     return sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
 }
 
@@ -27,8 +28,8 @@ int main(){
     while (in.peek() != EOF){
         getline(in, sx,' ');
         getline(in, sy);
-        x = stoi(sx);
-        y = stoi(sy);
+        x = stod(sx);
+        y = stod(sy);
         points[cnt] = new point(x, y);
         cnt++;
     }
@@ -38,15 +39,9 @@ int main(){
         for (int j = 0; j < cnt; j++)
             for (int t = 0; t < cnt; t++){
                 if (i != j && i != t && j != t){
-                    int x1 = points[i] -> x;
-                    int y1 = points[i] -> y;
-                    int x2 = points[j] -> x;
-                    int y2 = points[j] -> y;
-                    int x3 = points[t] -> x;
-                    int y3 = points[t] -> y;
-                    double A = get_rast(x1,y1,x2,y2);
-                    double B = get_rast(x2,y2,x3,y3);
-                    double C = get_rast(x3,y3,x1,y1);
+                    double A = get_rast(points[i],points[j]);
+                    double B = get_rast(points[j], point[t]);
+                    double C = get_rast(points[t], points[i]);
                     if ( (A + B) > C && (A + C) > B && (B + C) > A){
                         curr_p = A + B + C;
                     }
