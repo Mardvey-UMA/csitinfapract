@@ -15,7 +15,7 @@ point::point(double a, double b){
 }
 
 double get_rast(point a, point b){
-    int x1 = b.x, y1 = b.y, x2 = a.x, y2 = a.y;
+    double x1 = b.x, y1 = b.y, x2 = a.x, y2 = a.y;
     return sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
 }
 
