@@ -52,6 +52,8 @@ int main(){
         prod->increase_cost(x); // инфляция, хаха
         prod->out_data();
     }
+    in.close();
+    out.close();
 }
 //input.txt
 // Вид Стоимость Сорт Количество
