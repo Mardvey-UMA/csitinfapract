@@ -62,6 +62,8 @@ int main(){
         cout << "Точка " << i + 1 << endl;
         cout << "( " << ans[i] -> x << " , " << ans[i] -> y << " )" << endl;
     }
+    in.close();
+    out.close();
     //input.txt
 //1 1
 // 2 3
