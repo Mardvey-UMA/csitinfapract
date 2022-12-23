@@ -9,6 +9,7 @@ int main(){
         getline(in, s);
         cout << s[0] << endl;
     }
+    in.close();
 }
 //input.txt
 // 32432
