@@ -11,7 +11,9 @@ int froga(int n, int x) {
 }
 
 int main() {
-    int x, n = 0;
+    int x, n = 0, ans;
     cin >> x;
-    cout << froga(n, x);
+    ans = froga(n, x);
+    cout << ans;
 }
+
