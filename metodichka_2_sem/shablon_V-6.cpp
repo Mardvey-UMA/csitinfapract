@@ -5,10 +5,18 @@ using namespace std;
 template <class Type>
 double mean_val(Type** arr, int n, int m){
     double ans = 0;
+    int otr_cnt = 0;
     for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
+        for (int j = 0; j < m; j++){
+            if (arr[i][j] < 0){
             ans += arr[i][j];
-    return ans / (n * m);
+            otr_cnt++;
+            }
+        }
+    if (otr_cnt != 0)
+        return ans / otr_cnt;
+    else
+        return 0.;
 }
 template <class Type>
 void input_array(Type** arr, int n, int m){
@@ -27,9 +35,9 @@ void print_array(Type** arr, int n, int m){
 }
 int main(){
 setlocale(LC_ALL, "Russian");
+cout << "Введите размерность массива\n";
 int n, m;
-n = 3;
-m = 3;
+cin >> n >> m;
 // Создаем интовский двумерный массив
 int** int_arr;
 int_arr = new int*[n];
@@ -42,11 +50,11 @@ double_arr = new double*[n];
 for (int i = 0; i < m; i++)
     double_arr[i] = new double[m];
 ///////////////////////////////////
-cout << "Введите целочисленный массив 3 x 3\n";
+cout << "Введите целочисленный массив" << n << " на " << m << "\n";
 input_array(int_arr, n, m);
 cout << "Ваш массив:\n";
 print_array(int_arr, n, m);
-cout << "Введите вещественный массив 3 x 3\n";
+cout << "Введите вещественный массив " << n << " на " << m << "\n";
 input_array(double_arr, n, m);
 cout << "Ваш массив:\n";
 print_array(double_arr, n, m);
