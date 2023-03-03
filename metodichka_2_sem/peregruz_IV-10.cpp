@@ -11,12 +11,7 @@ float F(float x){
         return x + 2;
 }
 void F (float x, float &y){
-    if ((x + 2) <= 1)
-        y = x*x;
-    else if ((x + 2) > 1 && (x + 2) < 10)
-        y =  1 / (x + 2);
-    else if ((x + 2) >= 10)
-        y =  x + 2;
+    y = F(x);
 }
 
 int main(){
