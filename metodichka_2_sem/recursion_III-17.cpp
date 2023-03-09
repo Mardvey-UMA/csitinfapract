@@ -10,31 +10,48 @@ bool is_upper(char c){
     return false;
 }
 
-string replace_propis(string s, int i, int flag){
-    // flag = 1 // Встретил слово с большой
-    // flag = 0 // Слово с маленькой
-    if (i == s.size()){
-        return s;
-    }else{
-        if (is_upper(s[i]) && flag == 0 && (s[i - 1] == ' ' || i == 0)){
-            flag = 1;
-            s[i] = '.';
-        }else if (s[i] == ' '){
-            flag = 0;
-        }else if (flag == 1){
-            s[i] = '.';
+void split(string* split_string, string s, int& n){
+    string temp =  "";
+    s+=' ';
+    for(int k = 0; k < s.size(); k++){
+        if (s[k] != ' '){
+            temp += s[k];
+        }else{
+            split_string[n] = temp;
+            temp = "";
+            n++;
         }
-        return replace_propis(s, i + 1, flag);
     }
+}
+
+
+
+void replace_propis(string* s, int i, int n){
+    if (n == i){
+        cout << "";
+    }else{
+        string h = s[i];
+        if (is_upper(h[0])){
+            s[i] = "...";
+        }
+        replace_propis(s, i + 1, n);
+    }
+
 
 }
 
 int main(){
-setlocale(LC_ALL, "Russian");
-string s;
-cout << "Введите строку\n";
-getline(cin, s);
-cout << replace_propis(s, 0, 0);
+    setlocale(LC_ALL, "Russian");
+    string s;
+    cout << "Введите строку\n";
+    getline(cin, s);
+    string* split_string = new string[s.size()];
+    int n = 0;
+    split(split_string, s, n);
+    replace_propis(split_string, 0, n);
+    for (int i = 0; i < n; i++){
+        cout << split_string[i] << " ";
+    }
 }
 //Aboba Ahhhh afffggfdAfjdfkj fdjgfkjgl HHhfghfHHH
 //..... ..... afffggfdAfjdfkj fdjgfkjgl ..........
