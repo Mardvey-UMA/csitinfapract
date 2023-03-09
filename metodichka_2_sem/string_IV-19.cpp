@@ -15,7 +15,14 @@ bool is_sybmol(char c){
     return false; 
 }
 
-bool is_float(string s){
+bool is_float(string s_raw){
+    string s = "";
+    int h = 0;
+    while(h < s_raw.size()){
+        if (s_raw[h] != ' ')
+            s += s_raw[h];
+        h++;
+    }
     bool flag = true;
     if ((s.size() == 1 && is_sybmol(s[0]) == true))
         if (is_digit(s[0]) == false)
@@ -88,3 +95,13 @@ int main(){
     else
         cout << "Неправильное десятичное число" << endl;
 }
+
+//test
+//input
+//1e-100 Правильное десятичное число
+//0. Правильное десятичное число
+//-10e-10 Правильное десятичное число
+//--1000e-1000 Неправильное десятичное число
+// 5. Правильное десятичное число
+// 103e45 Правильное десятичное число
+// aaae-gggg0 Неправильное десятичное число
