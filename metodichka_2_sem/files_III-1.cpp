@@ -4,33 +4,30 @@
 
 using namespace std;
 
-ofstream out ("output1.txt");
-
 int main(){
     setlocale(LC_ALL, "Russian");
     cout << "Введите n" << endl;
     int n, cnt = 1;
     string s, temp = "";
     cin >> n;
+    ofstream fout("txt.bin", ios_base::binary);
+	ifstream fin("txt.bin", ios_base::binary);
     if (n <= 0){
         cout << "Извините число должно быть натуральным" << endl;
         exit(0);
     }
-    for (int d = 1; d <= n; d++)
-        out << d * d << "\n";
-
-    out.close();
-
-    ifstream out ("output1.txt");
-
-    while (out.peek() != EOF){
-        getline(out, s);
-        if (cnt % 2 != 0)
-            cout << s << " ";
+	for (int i = 1; i <= n; i++) {
+		int k = i * i;
+        fout.write((char*)&k, sizeof(int));
+	}
+	fout.close();
+	int tmp;
+	while(!fin.eof()) {
+		fin.read((char*)&tmp, sizeof(int));
+		if (cnt % 2 != 0) cout << tmp << " ";
         cnt++;
-    }
-    
-    out.close();
+	}
+	fin.close();
 
 }
 
