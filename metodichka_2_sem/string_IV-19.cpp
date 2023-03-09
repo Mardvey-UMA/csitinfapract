@@ -81,6 +81,7 @@ bool is_float(string s){
 
 int main(){
     string s;
+    setlocale(LC_ALL, "Russian");
     getline(cin, s);
     if (is_float(s))
         cout << "Правильное десятичное число" << endl;
