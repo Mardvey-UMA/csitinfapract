@@ -22,7 +22,7 @@ int main(){
 	}
 	fout.close();
 	int tmp;
-	while(!fin.eof()) {
+	while(fin.peek() != EOF) {
 		fin.read((char*)&tmp, sizeof(int));
 		if (cnt % 2 != 0) cout << tmp << " ";
         cnt++;
