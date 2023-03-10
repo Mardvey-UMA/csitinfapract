@@ -24,6 +24,7 @@ int main(){
 	int tmp;
 	while(fin.peek() != EOF) {
 		fin.read((char*)&tmp, sizeof(int));
+		// Сделать с пропуском s
 		if (cnt % 2 != 0) cout << tmp << " ";
         cnt++;
 	}
