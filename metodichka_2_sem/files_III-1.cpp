@@ -4,29 +4,30 @@
 
 using namespace std;
 
-int main(){
-    setlocale(LC_ALL, "Russian");
-    cout << "Введите n" << endl;
-    int n, cnt = 1;
-    string s, temp = "";
-    cin >> n;
-    ofstream fout("txt.bin", ios_base::binary);
+int main() {
+	setlocale(LC_ALL, "Russian");
+	cout << "Введите n" << endl;
+	int n, cnt = 1;
+	string s, temp = "";
+	cin >> n;
+	ofstream fout("txt.bin", ios_base::binary);
 	ifstream fin("txt.bin", ios_base::binary);
-    if (n <= 0){
-        cout << "Извините число должно быть натуральным" << endl;
-        exit(0);
-    }
+	if (n <= 0) {
+		cout << "Извините число должно быть натуральным" << endl;
+		exit(0);
+	}
 	for (int i = 1; i <= n; i++) {
 		int k = i * i;
-        fout.write((char*)&k, sizeof(int));
+		fout.write((char*)&k, sizeof(int));
 	}
 	fout.close();
 	int tmp;
-	while(fin.peek() != EOF) {
+	while (fin.peek() != EOF) {
 		fin.read((char*)&tmp, sizeof(int));
-		// Сделать с пропуском s
-		if (cnt % 2 != 0) cout << tmp << " ";
-        cnt++;
+		cout << tmp << " ";
+		fin.seekg(sizeof(int), ios::cur);
+		if (fin.peek() == EOF)
+			break;
 	}
 	fin.close();
 
