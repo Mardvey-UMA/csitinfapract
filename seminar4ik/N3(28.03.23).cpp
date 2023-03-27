@@ -22,6 +22,7 @@ void bubbleSort(string* arr, int n)
 int main()
 {
     int n;
+    setlocale(LC_ALL, "Russian");
     cout << "Введите количество строк: ";
     cin >> n;
 
