@@ -1,133 +1,115 @@
-// Измененный код на C++
 #include <iostream>
-#include <fstream>
-#include <string>
-
+#include <ctime>
+#include <random>
+#include <algorithm>
 using namespace std;
-
-ifstream fin("students.txt");
-ofstream fout("output_quck_sort.txt");
-
-void split(string* split_string, string s, int& n, char c) {
-    string temp = "";
-    s += c;
-    for (int k = 0; k < s.size(); k++) {
-        if (s[k] != c) {
-            temp += s[k];
-        }
-        else {
-            split_string[n] = temp;
-            temp = "";
-            n++;
-        }
-    }
+int n = 0;
+void diag_iter(pair<int, int>& coord, int flag = 1) {
+	if (flag == 1) { // up
+		coord.first--;
+		coord.second++;
+	}
+	else if (flag == 0) { // down
+		coord.first++;
+		coord.second--;
+	}
+}
+pair<int, int> diag_iter_r(pair<int, int>& coord, int flag = 1) {
+	diag_iter(coord, flag);
+	return coord;
 }
 
-struct Student {
-    string name, surname, patronymic;
-    int birth_year, mark1, mark2, mark3, mark4, mark5, group;
-
-    Student();
-    Student(int group_, string surname_, string name_, string patronymic_, int birth_year_, int mark1_, int mark2_, int mark3_, int mark4_, int mark5_);
-    void put_in_file();
-    void print();
-};
-
-Student::Student(int group_, string surname_, string name_, string patronymic_, int birth_year_, int mark1_, int mark2_, int mark3_, int mark4_, int mark5_) {
-    group = group_;
-    name = name_;
-    surname = surname_;
-    patronymic = patronymic_;
-    birth_year = birth_year_;
-    mark1 = mark1_;
-    mark2 = mark2_;
-    mark3 = mark3_;
-    mark4 = mark4_;
-    mark5 = mark5_;
+int get_diff(pair<int, int> p1, pair<int, int> p2, int n, int flag = 1) {
+	double r1, r2;
+	r1 = sqrt((p1.first - (n - 1)) * (p1.first - (n - 1)) + (p1.second * p1.second));
+	r2 = sqrt((p2.first - (n - 1)) * (p2.first - (n - 1)) + (p2.second * p2.second));
+	if (flag == 1)
+		if (r1 >= r2) return 1;
+		else return 0;
+	else if (flag == 0)
+		if (r1 > r2) return 1;
+		else return 0;
 }
-
-Student::Student() {
-    group = 0;
-    name = " ";
-    surname = " ";
-    patronymic = " ";
-    birth_year = 0;
-    mark1 = 0;
-    mark2 = 0;
-    mark3 = 0;
-    mark4 = 0;
-    mark5 = 0;
+pair <int, int> findpivot(int** a, pair <int, int> e1, pair <int, int> e2) {
+	pair <int, int> mx_idx;
+	int mx_elem = -10000000;
+	pair<int, int> t = e1;
+	for (t; (get_diff(t, e2, n, 0) == 0); diag_iter(t)) {
+		if (a[t.first][t.second] >= mx_elem) {
+			mx_elem = a[t.first][t.second];
+			mx_idx = t;
+		}
+	}
+	return mx_idx;
 }
-
-void Student::put_in_file() {
-    fout << group << " " << surname << " " << name << " " << patronymic << " ";
-    fout << birth_year << " " << mark1 << " " << mark2 << " " << mark3 << " " << mark4 << " " << mark5 << endl;
+pair<int, int> partition(int** a, pair<int, int> l, pair<int, int> r, int pivot, bool flag) {
+	if (flag == false) {
+		do {
+			while (a[l.first][l.second] < pivot && l.first > 0 && l.second < n - 1) diag_iter(l);
+			while (a[r.first][r.second] >= pivot && r.second > 0 && r.first < n - 1) diag_iter(r, 0);
+			if (l.second < r.second) swap(a[r.first][r.second], a[l.first][l.second]);
+			if (l == r) break;
+		} while (l.second <= r.second);
+	}
+	else {
+		do {
+			while (a[l.first][l.second] >= pivot && l.first > 0 && l.second < n - 1) diag_iter(l);
+			while (a[r.first][r.second] < pivot && r.second > 0 && r.first < n - 1) diag_iter(r, 0);
+			if (l.second < r.second) swap(a[r.first][r.second], a[l.first][l.second]);
+			if (l == r) break;
+		} while (l.second <= r.second);
+	}
+	return l;
 }
-
-void Student::print() {
-    cout << group << " " << surname << " " << name << " " << patronymic << " ";
-    cout << birth_year << " " << mark1 << " " << mark2 << " " << mark3 << " " << mark4 << " " << mark5 << endl;
-}
-
-int diff_func(Student s1, Student s2) {
-    if (((s1.surname < s2.surname) || ((s1.surname == s2.surname) && (s1.name < s2.name)) || ((s1.surname == s2.surname) && (s1.name == s2.name) && (s1.patronymic < s2.patronymic))))
-        return 1;
-    else
-        return 0;
-}
-
-int partition(Student* a, int start, int end)
-{
-    auto pivot = a[end];
-    int pIndex = start;
-    for (int i = start; i < end; i++)
-    {
-        if (diff_func(a[i], pivot) == 1)
-        {
-            swap(a[i], a[pIndex]);
-            pIndex++;
-        }
-    }
-    swap(a[pIndex], a[end]);
-    return pIndex;
-}
-
-void quicksort(Student* a, int start, int end)
-{
-    if (start >= end) {
-        return;
-    }
-    int pivot = partition(a, start, end);
-    quicksort(a, start, pivot - 1);
-    quicksort(a, pivot + 1, end);
-}
+void quicksort(int** a, pair<int, int> start, pair<int, int> end, bool r = false) {
+	auto pivotindex = findpivot(a, start, end);
+	int pivot = a[pivotindex.first][pivotindex.second];
+	pair<int, int> k = partition(a, start, end, pivot, r);
+	if (end.second <= start.second)
+		return;
+	if (start.first != end.first && start.second != end.second && a[start.first][start.second] != a[end.first][end.second]) {
+		quicksort(a, start, diag_iter_r(k, 0), r);
+		quicksort(a, diag_iter_r(k), end, r);
+	}
+	}
 
 int main() {
-    setlocale(LC_ALL, "Russian");
-    int n = 100, c = 0, nn = 10, k = 0;
-    Student* students = new Student[n];
-    string info;
-    while (fin.peek() != EOF) {
-        getline(fin, info);
-        nn = 10;
-        k = 0;
-        string* tmp = new string[nn];
-        split(tmp, info, k, ' ');
-        students[c].group = stoi(tmp[0]);
-        students[c].surname = tmp[1];
-        students[c].name = tmp[2];
-        students[c].patronymic = tmp[3];
-        students[c].birth_year = stoi(tmp[4]);
-        students[c].mark1 = stoi(tmp[5]);
-        students[c].mark2 = stoi(tmp[6]);
-        students[c].mark3 = stoi(tmp[7]);
-        students[c].mark4 = stoi(tmp[8]);
-        students[c].mark5 = stoi(tmp[9]);
-        c++;
-    }
-    quicksort(students, 0, c - 1);
-    for (int i = 0; i < c; i++)
-        students[i].put_in_file();
-    for (int i = 0; i < c; i++)
-        students[i].print();
+	setlocale(LC_ALL, "Russian");
+	cout << "Введите размерность массива n\n";
+	cin >> n;
+	int** arr = new int* [n];
+	for (int i = 0; i < n; i++)
+		arr[i] = new int[n];
+	cout << "Введите массив по строчкам\n";
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			cin >> arr[i][j];
+	cout << endl;
+	for (int i = 1; i < n - 1; i++) {
+		pair <int, int> bot1;
+		bot1.first = i;
+		bot1.second = 0;
+		pair <int, int> top1;
+		top1.first = 0;
+		top1.second = i;
+		pair <int, int> bot2;
+		bot2.second = i;
+		bot2.first = n - 1;
+		pair <int, int> top2;
+		top2.second = n - 1;
+		top2.first = i;
+		quicksort(arr, bot1, top1, true);
+		quicksort(arr, bot2, top2);
+	}
+	cout << "Отсортированный массив:\n";
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if ((i == 0 && j == 0) || (i + j == n - 1) || (i == n - 1 && j == n - 1))
+				cout << " ";
+			else
+				cout << arr[i][j] << " ";
+
+		}
+		cout << endl;
+	}
 }
