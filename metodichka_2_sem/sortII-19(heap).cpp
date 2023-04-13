@@ -2,6 +2,9 @@
 #include <ctime>
 #include <random>
 #include <algorithm>
+#include <windows.h>
+#include <conio.h>
+#include <iomanip>
 using namespace std;
 
 void diag_iter(pair<int, int>& coord, int flag = 1) {
@@ -45,7 +48,10 @@ void pyramid_sort(int* arr, int n, int flag = 1) {
 
 int main() {
 	int n;
-	setlocale(LC_ALL, "Russian");
+	//setlocale(LC_ALL, "Russian");
+    system("chcp 1251");
+    SetConsoleCP(1251); 
+        SetConsoleOutputCP(1251);
 	cout << "Введите размерность массива n\n";
 	cin >> n;
 	int** arr = new int* [n];
@@ -79,6 +85,7 @@ int main() {
 			arr[y.first][y.second] = u[r];
 			r++;
 		}
+        delete[]u;
 		// НАСОРТИРОВАЛИСЬ ПО НОВОЙ ДАВАЙ
 		///////////////////
 		// СОРТИРУЕМ НИЖЕ ПОБОЧКИ ПО ВОЗРАСТАНИЮ
@@ -101,17 +108,19 @@ int main() {
 			arr[y.first][y.second] = e[r];
 			r++;
 		}
+        //delete[]e;
 		////////////////////
 	}
 	cout << "Отсортированный массив:\n";
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if ((i == 0 && j == 0) || (i + j == n - 1) || (i == n - 1 && j == n - 1))
-				cout << " ";
+				cout << setw(3) << " ";
 			else
-				cout << arr[i][j] << " ";
+				cout << setw(3) << arr[i][j] << " ";
 
 		}
 		cout << endl;
 	}
+_getch();
 }
