@@ -7,6 +7,7 @@ using namespace std;
 
 ifstream fin("students.txt");
 ofstream fout("output2.txt");
+
 void split(string* split_string, string s, int& n, char c) { 
 	string temp = "";
 	s += c;
@@ -58,7 +59,9 @@ void Student::put_in_file() {
 	fout << group << " " << surname << " " << name << " " << otch << " ";
 	fout << yearbirth << " " << m1 << " " << m2 << " " << m3 << " " << m4 << " " << m5 << endl;
 }
-
+bool predicatic(Student s1, Student s2){
+	return ((s1.surname < s2.surname) || ((s1.surname == s2.surname) && (s1.name < s2.name)) || ((s1.surname == s2.surname) && (s1.name == s2.name) && (s1.otch < s2.otch)) || ((s1.surname == s2.surname) && (s1.name == s2.name) && (s1.otch == s2.otch) && (s1.yearbirth > s2.yearbirth)));
+}
 // Ф1 < Ф2 ||
 // Ф1 == Ф2 && И1 < И2 ||
 // Ф1 == Ф2 && И1 == И2 && О1 < О2 ||
@@ -70,7 +73,7 @@ void bubble_sort(Student* students, int n) {
 		for (int j = 0; j + 1 < n - i; j++) {
 			auto s1 = students[j + 1];
 			auto s2 = students[j];
-			if ((s1.surname < s2.surname) || ((s1.surname == s2.surname) && (s1.name < s2.name)) || ((s1.surname == s2.surname) && (s1.name == s2.name) && (s1.otch < s2.otch)) || ((s1.surname == s2.surname) && (s1.name == s2.name) && (s1.otch == s2.otch) && (s1.yearbirth > s2.yearbirth))) {
+			if (predicatic(s1, s2)) {
 				auto t = students[j + 1];
 				students[j + 1] = students[j];
 				students[j] = t;
@@ -81,12 +84,8 @@ void bubble_sort(Student* students, int n) {
 void insertion_sort(Student* students, int n) {
 	for (int i = 1; i < n; i++) {
 		auto d = students[i];
-		auto sn = d.surname;
-		auto na = d.name;
-		auto ot = d.otch;
-		auto yb = d.yearbirth;
 		int j = i;
-		while (j > 0 && ((sn < students[j - 1].surname) || ((sn == students[j - 1].surname) && (na < students[j - 1].name)) || ((sn == students[j - 1].surname) && (na == students[j - 1].name) && (ot < students[j - 1].otch)) || ((sn == students[j - 1].surname) && (na == students[j - 1].name) && (ot == students[j - 1].otch) && (yb > students[j - 1].yearbirth)))) {
+		while (j > 0 && (predicatic(d, students[j - 1]))) {
 			students[j] = students[j - 1];
 			j--;
 		}
@@ -101,7 +100,7 @@ void selection_sort(Student* students, int n) {
 		for (j = i + 1; j < n; j++) {
 			auto s1 = students[j];
 			auto s2 = students[key];
-			if ((s1.surname < s2.surname) || ((s1.surname == s2.surname) && (s1.name < s2.name)) || ((s1.surname == s2.surname) && (s1.name == s2.name) && (s1.otch < s2.otch)) || ((s1.surname == s2.surname) && (s1.name == s2.name) && (s1.otch == s2.otch) && (s1.yearbirth > s2.yearbirth))) {
+			if (predicatic(s1, s2)) {
 				key = j;
 			}
 		}
