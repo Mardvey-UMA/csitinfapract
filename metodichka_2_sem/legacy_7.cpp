@@ -59,7 +59,7 @@ public:
     bool isType(string type){
         return (this -> type == type);
     }
-    void getInfo(){
+    virtual void getInfo(){
         fout << "Name: " << name << " Cost: " << cost;
         fout << " Type: " << type << " Age Cenz: " << cenz << endl;
     }
@@ -168,44 +168,49 @@ public:
     }
 
 };
-void find_goods(Goods* g, string type, int n){
+void find_goods(Goods** g, string type, int n){
     fout << "FIND RESULTS\n";
     for (int i = 0; i < n; i++){
-        if (g[i].isType(type))
-            g[i].getInfo();
+        if (g[i]->isType(type)){
+            g[i]->getInfo();
+            cout << i << endl;
+        }
     }
     //fout.open("output.txt");
 }
+
 int main(){
 fout.open("output.txt");
 int n = 21;
-Goods* data_base = new Goods[n];
-data_base[0] = Toy("Lego City Police Station", 59.99, "6-12", "Lego", "Plastic");
-data_base[1] = Toy("Barbie Dreamhouse", 199.99, "3+", "Mattel", "Plastic");
-data_base[2] = Toy("Nerf N-Strike Elite Disruptor", 12.99, "8+", "Hasbro", "Plastic");
-data_base[3] = Toy("Hot Wheels Track Builder System", 29.99, "4-10", "Mattel", "Plastic");
-data_base[4] = Toy("Funko Pop! Marvel: Avengers Endgame - Iron Man", 9.99, "3+", "Funko", "Vinyl");
-data_base[5] = Toy("Hatchimals CollEGGtibles", 9.99, "5+", "Spin Master", "Plastic");
-data_base[6] = Toy("Play-Doh Kitchen Creations Ultimate Swirl Ice Cream Maker", 24.99, "3+", "Hasbro", "Plastic");
-data_base[7] = Book("The Hunger Games", 10.99, "13+", "Suzanne Collins", "Paperback");
-data_base[8] = Book("Harry Potter and the Philosopher's Stone", 8.99, "9+", "J.K. Rowling", "Hardcover");
-data_base[9] = Book("To Kill a Mockingbird", 9.99, "14+", "Harper Lee", "Paperback");
-data_base[10] = Book("1984", 11.99, "16+", "George Orwell", "Paperback");
-data_base[11] = Book("The Catcher in the Rye", 8.99, "16+", "J.D. Salinger", "Paperback");
-data_base[12] = Book("The Great Gatsby", 9.99, "14+", "F. Scott Fitzgerald", "Paperback");
-data_base[13] = Book("Pride and Prejudice", 7.99, "12+", "Jane Austen", "Paperback");
-data_base[14] = SportsEquipment("Wilson NFL Super Grip Football", 14.99, "6+", "Wilson");
-data_base[15] = SportsEquipment("Spalding NBA Street Basketball", 19.99, "8+", "Spalding");
-data_base[16] = SportsEquipment("Callaway Men's Strata Complete Golf Set", 249.99, "18+", "Callaway");
-data_base[17] = SportsEquipment("EastPoint Sports Table Tennis Table", 299.99, "8+", "EastPoint Sports");
-data_base[18] = SportsEquipment("Razor A Kick Scooter", 29.99, "5+", "Razor");
-data_base[19] = SportsEquipment("K2 Skate Men's Kinetic 80 Inline Skates", 99.99, "18+", "K2 Skate");
-data_base[20] = SportsEquipment("Wilson Pro Staff Precision XL 110 Tennis Racquet", 69.99, "12+", "Wilson");
+Goods** data_base = new Goods*[n];
+data_base[0] = new Toy("Lego City Police Station", 59.99, "6-12", "Lego", "Plastic");
+data_base[1] = new Toy("Barbie Dreamhouse", 199.99, "3+", "Mattel", "Plastic");
+data_base[2] = new Toy("Nerf N-Strike Elite Disruptor", 12.99, "8+", "Hasbro", "Plastic");
+data_base[3] = new Toy("Hot Wheels Track Builder System", 29.99, "4-10", "Mattel", "Plastic");
+data_base[4] = new Toy("Funko Pop! Marvel: Avengers Endgame - Iron Man", 9.99, "3+", "Funko", "Vinyl");
+data_base[5] = new Toy("Hatchimals CollEGGtibles", 9.99, "5+", "Spin Master", "Plastic");
+data_base[6] = new Toy("Play-Doh Kitchen Creations Ultimate Swirl Ice Cream Maker", 24.99, "3+", "Hasbro", "Plastic");
+data_base[7] = new Book("The Hunger Games", 10.99, "13+", "Suzanne Collins", "Paperback");
+data_base[8] = new Book("Harry Potter and the Philosopher's Stone", 8.99, "9+", "J.K. Rowling", "Hardcover");
+data_base[9] = new Book("To Kill a Mockingbird", 9.99, "14+", "Harper Lee", "Paperback");
+data_base[10] = new Book("1984", 11.99, "16+", "George Orwell", "Paperback");
+data_base[11] = new Book("The Catcher in the Rye", 8.99, "16+", "J.D. Salinger", "Paperback");
+data_base[12] = new Book("The Great Gatsby", 9.99, "14+", "F. Scott Fitzgerald", "Paperback");
+data_base[13] = new Book("Pride and Prejudice", 7.99, "12+", "Jane Austen", "Paperback");
+data_base[14] = new SportsEquipment("Wilson NFL Super Grip Football", 14.99, "6+", "Wilson");
+data_base[15] = new SportsEquipment("Spalding NBA Street Basketball", 19.99, "8+", "Spalding");
+data_base[16] = new SportsEquipment("Callaway Men's Strata Complete Golf Set", 249.99, "18+", "Callaway");
+data_base[17] = new SportsEquipment("EastPoint Sports Table Tennis Table", 299.99, "8+", "EastPoint Sports");
+data_base[18] = new SportsEquipment("Razor A Kick Scooter", 29.99, "5+", "Razor");
+data_base[19] = new SportsEquipment("K2 Skate Men's Kinetic 80 Inline Skates", 99.99, "18+", "K2 Skate");
+data_base[20] = new SportsEquipment("Wilson Pro Staff Precision XL 110 Tennis Racquet", 69.99, "12+", "Wilson");
 
 for (int i = 0; i < n; i++){
-    data_base[i].getInfo();
+   data_base[i]->getInfo();
 }
+fout.close();
 fout.open("find_res.txt");
 string t = "Toy";
 find_goods(data_base, t, n);
+//_getch();
 }
