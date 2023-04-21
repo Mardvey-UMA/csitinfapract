@@ -50,21 +50,21 @@ public:
     int getMonth(){
         return month;
     }
-    void printData(string format = "mm/dd/yyyy"){
-        string* months = new string[13];
-        months[1] = "January";
-        months[2] = "February";
-        months[3] = "March";
-        months[4] = "April";
-        months[5] = "May";
-        months[6] = "June";
-        months[7] = "July";
-        months[8] = "August";
-        months[9] = "September";
-        months[10] = "October";
-        months[11] = "November";
-        months[12] = "December";
+    void printData(string format = "text"){
         if (format == "text"){
+            string* months = new string[13];
+            months[1] = "January";
+            months[2] = "February";
+            months[3] = "March";
+            months[4] = "April";
+            months[5] = "May";
+            months[6] = "June";
+            months[7] = "July";
+            months[8] = "August";
+            months[9] = "September";
+            months[10] = "October";
+            months[11] = "November";
+            months[12] = "December";
             fout << day << " " << months[month] << " " << year << endl;
             delete[]months;
         }else if(format == "dd/mm/yyyy"){
@@ -143,7 +143,6 @@ public:
         setMonth(month); 
         setYear(year);
     }
-
 };
 
 
@@ -156,15 +155,18 @@ int main(){
     fout << "Прошло вот столько времени между\n";
     d1.printData("text");
     d2.printData("text");
-    Data::Data_diff(d1, d2);
+    auto g = Data::Data_diff(d1, d2);
+    delete[]g;
     fout << "Следующий день после\n";
     d1.printData("text");
     auto dt = d1.getNextDay();
     dt.printData("text");
+    d1.printData("text");
     fout << "Предыдущий день перед\n";
     d1.printData("text");
     dt = d1.getPreviousDay();
     dt.printData("text");
+    d1.printData();
     fout << "Прибавим к дате 3 дня, получаем\n";
     dt = d1.changeDay(3);
     dt.printData("text");
@@ -174,5 +176,5 @@ int main(){
     fout << "Отнимем 5 лет\n";
     dt = d1.changeYear(-5);
     dt.printData("text");
-//_getch();
+_getch();
 }
