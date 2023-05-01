@@ -18,6 +18,13 @@ class List
 
 public:
     List() : first(nullptr), last(nullptr), size(0) {}
+    List(const List &other) : first(nullptr), last(nullptr), size(0)
+    {
+        for (Item *t = other.first; t != nullptr; t = t->next)
+        {
+            this->add(t->inf);
+        }
+    }
     unsigned int getSize()
     {
         return this->size;
@@ -60,59 +67,38 @@ public:
             size--;
         }
     }
-
-    void print()
+    List get_all_positive()
     {
+        List *tmp_lst = new List;
         for (Item *t = first; t != nullptr; t = t->next)
-            cout << t->inf << " ";
-        cout << endl;
+            if (t->inf > 0)
+                tmp_lst->add(t->inf);
+        return *tmp_lst;
     }
-    void erase(int index)
+    List get_all_negative(bool with_null = false)
     {
-        if (index < 0 || index >= size)
+        List *tmp_lst = new List;
+        for (Item *t = first; t != nullptr; t = t->next)
         {
-            return;
-        }
-        Item *t = first;
-        if (index == 0)
-        {
-            first = t->next;
-            if (first != nullptr)
+            if (with_null)
             {
-                first->prev = nullptr;
+                if (t->inf <= 0)
+                    tmp_lst->add(t->inf);
             }
             else
             {
-                last = nullptr;
+                if (t->inf < 0)
+                    tmp_lst->add(t->inf);
             }
-            delete t;
-            size--;
-            return;
         }
-        for (int i = 0; i < index - 1; i++)
-        {
-            t = t->next;
-        }
-        t->prev->next = t->next;
-        if (t->next != nullptr)
-        {
-            t->next->prev = t->prev;
-        }
-        else
-        {
-            last = t->prev;
-        }
-        delete t;
-        size--;
+        return *tmp_lst;
     }
-    T &operator[](int index)
+    void add_list(const List &other)
     {
-        Item *t = first;
-        for (int i = 0; i < index - 1; i++)
+        for (Item *t = other.first; t != nullptr; t = t->next)
         {
-            t = t->next;
+            this->add(t->inf);
         }
-        return t->inf;
     }
     ~List()
     {
@@ -120,6 +106,78 @@ public:
         {
             this->pop_back();
         }
+    }
+    void erase(Item *t)
+    {
+        if (t == nullptr)
+        {
+            return;
+        }
+        if (t == first)
+        {
+            pop_head();
+            return;
+        }
+
+        if (t == last)
+        {
+            pop_back();
+            return;
+        }
+        t->prev->next = t->next;
+        t->next->prev = t->prev;
+        delete t;
+        size--;
+    }
+    T get_min()
+    {
+        T mn = this->get_first();
+        for (Item *t = first; t != nullptr; t = t->next)
+        {
+            if (t->inf < mn)
+            {
+                mn = t->inf;
+            }
+        }
+        return mn;
+    }
+    void delete_value(T value)
+    {
+        Item *t = first;
+        while (t != nullptr)
+        {
+            if (t->inf == value)
+            {
+                Item *toDelete = t;
+                t = t->next;
+                erase(toDelete);
+            }
+            else
+            {
+                t = t->next;
+            }
+        }
+    }
+    void print()
+    {
+        for (Item *t = first; t != nullptr; t = t->next)
+            cout << t->inf << " ";
+        cout << endl;
+    }
+    void reverse_print()
+    {
+        for (Item *t = last; t != nullptr; t = t->prev)
+            cout << t->inf << " ";
+        cout << endl;
+    }
+    T &operator[](int index)
+    {
+        Item *t = first;
+        for (int i = 0; i < index; i++)
+        {
+            t = t->next;
+        }
+        return t->inf;
     }
 };
 
@@ -132,28 +190,9 @@ int main()
         cin >> t;
         lst.add(t);
     }
-    int r, mn = lst[0];
-    for (int i = 0; i < n; i++)
-    {
-        r = lst[i];
-        if (r < mn)
-        {
-            mn = r;
-        }
-    }
-    // 1 1 2 3 4 1 1 2 9 10
-    int i = 0;
-    while (i < lst.getSize())
-    {
-        if (lst[i] == mn)
-        {
-            lst.erase(i);
-        }
-        else
-        {
-            i++;
-        }
-    }
+    int m = lst.get_min();
+    lst.delete_value(m);
     lst.print();
+    lst.reverse_print(); // Пруф, что двусвязный список работает
     system("pause");
 }
