@@ -114,6 +114,12 @@ public:
             cout << t->inf << " ";
         cout << endl;
     }
+    void reverse_print()
+    {
+        for (Item *t = last; t != nullptr; t = t->prev)
+            cout << t->inf << " ";
+        cout << endl;
+    }
     T &operator[](int index)
     {
         Item *t = first;
@@ -136,5 +142,6 @@ int main()
     List<int> newLst(lst.get_all_negative());
     newLst.add_list(lst.get_all_positive());
     newLst.print();
+    newLst.reverse_print();
     system("pause");
 }
