@@ -18,6 +18,13 @@ class List
 
 public:
     List() : first(nullptr), last(nullptr), size(0) {}
+    List(const List &other) : first(nullptr), last(nullptr), size(0)
+    {
+        for (Item *t = other.first; t != nullptr; t = t->next)
+        {
+            this->add(t->inf);
+        }
+    }
     unsigned int getSize()
     {
         return this->size;
@@ -60,6 +67,39 @@ public:
             size--;
         }
     }
+    List get_all_positive()
+    {
+        List *tmp_lst = new List;
+        for (Item *t = first; t != nullptr; t = t->next)
+            if (t->inf > 0)
+                tmp_lst->add(t->inf);
+        return *tmp_lst;
+    }
+    List get_all_negative(bool with_null = false)
+    {
+        List *tmp_lst = new List;
+        for (Item *t = first; t != nullptr; t = t->next)
+        {
+            if (with_null)
+            {
+                if (t->inf <= 0)
+                    tmp_lst->add(t->inf);
+            }
+            else
+            {
+                if (t->inf < 0)
+                    tmp_lst->add(t->inf);
+            }
+        }
+        return *tmp_lst;
+    }
+    void add_list(const List &other)
+    {
+        for (Item *t = other.first; t != nullptr; t = t->next)
+        {
+            this->add(t->inf);
+        }
+    }
     ~List()
     {
         while (first != nullptr)
@@ -89,24 +129,12 @@ int main()
 {
     List<int> lst;
     int t, n = 10;
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++){
         cin >> t;
         lst.add(t);
     }
-    List<int> newLst;
-    for (int i = 0; i < n; i++)
-    {
-        t = lst[i];
-        if (t < 0)
-            newLst.add(t);
-    }
-    for (int i = 0; i < n; i++)
-    {
-        t = lst[i];
-        if (t >= 0)
-            newLst.add(t);
-    }
+    List<int> newLst(lst.get_all_negative());
+    newLst.add_list(lst.get_all_positive());
     newLst.print();
     system("pause");
 }
