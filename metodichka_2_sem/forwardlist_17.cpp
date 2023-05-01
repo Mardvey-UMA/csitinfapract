@@ -81,26 +81,28 @@ public:
             cout << t->inf << " ";
         cout << endl;
     }
-    void duplicateEven()
-    {
-        if (first == nullptr)
-            return;
-        Item *t = first;
-        while (t != nullptr)
-        {
-            if (t->inf % 2 == 0)
-            {
-                size++;
-                Item *newItem = new Item(t->inf, t->next);
-                t->next = newItem;
-                if (t == last)
-                    last = newItem;
-                t = t->next;
+    List get_all_positive(){
+        List * tmp_lst = new List;
+        for (Item *t = first; t != nullptr; t = t->next)
+            if (t -> inf > 0) tmp_lst->add(t -> inf);
+        return *tmp_lst;
+    }
+    List get_all_negative(bool with_null = false){
+        List * tmp_lst = new List;
+        for (Item *t = first; t != nullptr; t = t->next){
+            if (with_null){
+                if (t -> inf <= 0) tmp_lst->add(t -> inf);
+            }else{
+                if (t -> inf < 0) tmp_lst->add(t -> inf);
             }
-            t = t->next;
+        }   
+        return *tmp_lst;   
+    }
+    void add_list(const List& other){
+        for (Item *t = other.first; t != nullptr; t = t -> next){
+            this -> add(t -> inf);
         }
     }
-
     T &operator[](int index)
     {
         if (index < 0 || index >= size)
@@ -166,17 +168,8 @@ int main(){
         cin >> t;
         lst.add(t);
     }
-    List<int> newLst;
-    for (int i = 0; i < n; i++){
-        t = lst[i];
-        if (t < 0)
-            newLst.add(t);
-    }
-    for (int i = 0; i < n; i++){
-        t = lst[i];
-        if (t >= 0)
-            newLst.add(t);
-    }
+    List<int> newLst(lst.get_all_negative());
+    newLst.add_list(lst.get_all_positive());
     newLst.print();
     system("pause");
 }
