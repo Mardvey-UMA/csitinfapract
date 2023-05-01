@@ -128,6 +128,35 @@ public:
             size++;
         }
     }
+    T get_min()
+    {
+        T mn = this->get_first();
+        for (Item *t = first; t != nullptr; t = t->next)
+        {
+            if (t->inf < mn)
+            {
+                mn = t->inf;
+            }
+        }
+        return mn;
+    }
+    void delete_value(T value)
+    {
+        Item *t = first;
+        while (t != nullptr)
+        {
+            if (t->inf == value)
+            {
+                Item *toDelete = t;
+                t = t->next;
+                erase(toDelete);
+            }
+            else
+            {
+                t = t->next;
+            }
+        }
+    }
     void erase(int index)
     {
         if (index < 0 || index >= size)
@@ -156,6 +185,33 @@ public:
             size--;
         }
     }
+    void erase(Item *t)
+    {
+        if (t == nullptr)
+        {
+            return;
+        }
+        if (t == first)
+        {
+            pop_head();
+            return;
+        }
+
+        if (t == last)
+        {
+            pop_back();
+            return;
+        }
+        Item *prev_t = first;
+        while (prev_t != nullptr && prev_t->next != t)
+        {
+            prev_t = prev_t->next;
+        }
+        prev_t->next = t->next;
+        delete t;
+        size--;
+    }
+
     ~List()
     {
         while (first != nullptr)
@@ -167,7 +223,6 @@ public:
 
 int main()
 {
-
     List<int> lst;
     int t, n = 10;
     for (int i = 0; i < n; i++)
@@ -175,29 +230,8 @@ int main()
         cin >> t;
         lst.add(t);
     }
-    int r, mn = lst.get_first();
-    for (int i = 0; i < n; i++)
-    {
-        r = lst[i];
-        if (r < mn)
-        {
-            mn = r;
-        }
-    }
-    // 1 1 2 3 4 1 1 2 9 10
-    int i = 0;
-    while (i < lst.getSize())
-    {
-        if (lst[i] == mn)
-        {
-            lst.erase(i);
-        }
-        else
-        {
-            i++;
-        }
-    }
-
+    int m = lst.get_min();
+    lst.delete_value(m);
     lst.print();
     system("pause");
 }
