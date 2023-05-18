@@ -115,13 +115,13 @@ public:
         }
         if (t == first)
         {
-            pop_head();
+            this->pop_head();
             return;
         }
 
         if (t == last)
         {
-            pop_back();
+            this->pop_back();
             return;
         }
         t->prev->next = t->next;
@@ -131,7 +131,7 @@ public:
     }
     T get_min()
     {
-        T mn = this->get_first();
+        T mn = this->first->inf;
         for (Item *t = first; t != nullptr; t = t->next)
         {
             if (t->inf < mn)
@@ -140,6 +140,25 @@ public:
             }
         }
         return mn;
+    }
+    void pop_head()
+    {
+        if (first == nullptr)
+        {
+            return;
+        }
+        Item *t = first;
+        first = t->next;
+        if (first != nullptr)
+        {
+            first->prev = nullptr;
+        }
+        else
+        {
+            last = nullptr;
+        }
+        delete t;
+        size--;
     }
     void delete_value(T value)
     {
