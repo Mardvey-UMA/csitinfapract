@@ -1,48 +1,32 @@
 #include <iostream>
 #include <vector>
 #include <set>
-
+typedef long long li;
 using namespace std;
 //Найти цифры которое нечетное число раз встречаются
 int main(){
-    int n, x;
-    vector <int> nums;
-    vector <int> cif(10);
-    vector <set<int>> ans;
-    vector <int> null_vec{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    set <int> tmp;
-    cout << "Enter n, and n numbers" << endl;
+    li n, x;
+    cout << "Enter number n\n";
     cin >> n;
-    for (int i = 0; i < n; i++){
-        cin >> x;
-        nums.push_back(x);
-    }
-    for (int i = 0; i < n; i++){
-        x = nums[i];
-        ///
-        for (int f = 0; f < 10; f++)
-            cif[f] = 0;
-        //cif = cif * null_vec;
-        tmp.clear();
-        ///
-        while (x){
-            cif[x % 10]++;
-            tmp.insert(x % 10);
-            x /= 10;
+    n = abs(n);
+    set<li> st1;
+    set<li> st2;
+    while (n){
+        li c = n%10;
+        if(st1.find(c) == st1.end() && st2.find(c) == st2.end())
+            st1.insert(c);
+        else if (st2.find(c) != st2.end()){
+            st2.erase(c);
+            st1.insert(c);
         }
-        for (int c = 0; c < 10; c++){
-            if (cif[c] % 2 == 0){
-                tmp.erase(cif[c]);
-            }
+        else if (st1.find(c) != st1.end()){
+            st1.erase(c);
+            st2.insert(c);
         }
-        ans.push_back(tmp);
+        n/=10;
     }
-    for (int i = 0; i < n; i++){       
-        cout << nums[i] << "(";
-        for (auto x: ans[i])
-            cout << x;
-        cout << "), ";
-    }
+    for(auto it : st1)
+        cout << it << ' ';
     cout << endl;
     system("pause");
 }
