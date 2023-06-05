@@ -5,9 +5,16 @@ typedef long long li;
 using namespace std;
 //Найти цифры которое нечетное число раз встречаются
 int main(){
-    li n, x;
+    li u, x;
+    vector<int> ggg;
     cout << "Enter number n\n";
-    cin >> n;
+    cin >> u;
+    while(u--){
+        int ty;
+        cin >> ty;
+        ggg.push_back(ty);
+    }
+    for (auto n: ggg){
     n = abs(n);
     set<li> st1;
     set<li> st2;
@@ -27,6 +34,9 @@ int main(){
     }
     for(auto it : st1)
         cout << it << ' ';
+    cout << endl;
+    }
+   
     cout << endl;
     system("pause");
 }
